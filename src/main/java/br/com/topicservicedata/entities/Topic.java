@@ -1,8 +1,14 @@
 package br.com.topicservicedata.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Topic {	
 	
+	@Id
 	private String id;
+	
 	private String nome;
 	private String description;
 	private String categoria;	

@@ -6,20 +6,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.topicservicedata.entities.Topic;
 import br.com.topicservicedata.exception.TopicException;
-import br.com.topicservicedata.log.LogFactory;
-import br.com.topicservicedata.log.MessageLogger;
+import br.com.topicservicedata.repositories.TopicRepository;
 import br.com.topicservicedata.rest.request.TopicRequest;
 import br.com.topicservicedata.service.TopicService;
 
 @Service
 public class TopicServiceImpl implements TopicService{
 	
-	//private static Logger logger = Logger.getLogger(TopicServiceImpl.class);
-	private static MessageLogger logger = LogFactory.getInstance(TopicServiceImpl.class).getMessageLogger();
+	@Autowired
+	private TopicRepository topicRepository;
+		
+	private static Logger logger = Logger.getLogger(TopicServiceImpl.class);
 	
 	private List<Topic> topics = new ArrayList<>(Arrays.asList(
 			new Topic("spring", "Spring frameWork", "Spring frameWork description", "back-end"),
@@ -70,22 +73,25 @@ public class TopicServiceImpl implements TopicService{
 		return null;
 	}
 	private Topic TopicBydId(String id) {
-		logger.info("buscar topic pelo id: ", id);
+		logger.info("buscar topic pelo id: "+ id);
 		if(isNull(id)) {
 			throw new TopicException("Não existe o id informado: " + id);
 		}
-		return topics.stream().filter(t ->	t.getId().equals(id)).findFirst().orElse(null);
+		return topicRepository.findById(id).get();
+		//return topics.stream().filter(t ->	t.getId().equals(id)).findFirst().orElse(null);
 	}
 	private Boolean addTopicService(Topic topic) {
-		if(TopicBydId(topic.getId()) == null) {
-			topics.add(topic);
+		if(topic != null){
+		topicRepository.save(topic);
 			return true;
-		}
-		
+		}		
 		return false;
 	}
 	public List<Topic> getAll(){
-		logger.info("get all topics: " , "url /topics");
+		logger.info("get all topics: " + "url /topics");
+		List<Topic>  topics = new ArrayList<>();
+		topicRepository.findAll()
+		.forEach(topics::add);
 		return topics;
 	}
 	public Topic getTopic(String id) {
