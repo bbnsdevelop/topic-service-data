@@ -3,7 +3,6 @@ package br.com.topicservicedata.service.impl;
 import static java.util.Objects.isNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -24,14 +23,9 @@ public class TopicServiceImpl implements TopicService{
 		
 	private static Logger logger = Logger.getLogger(TopicServiceImpl.class);
 	
-	private List<Topic> topics = new ArrayList<>(Arrays.asList(
-			new Topic("spring", "Spring frameWork", "Spring frameWork description", "back-end"),
-			new Topic("java", "java para web", "Java core description", "back-end"),
-			new Topic("javascript", "java script", "java script para web description", "front-end"),
-			new Topic("javascript2", "java script 2", "java script para web description e", "front-end")
-			));
 	private Boolean deleteTopic(String id) {
-		if(topics.removeIf(t -> t.getId().equals(id))) {
+		if(isNull(id)) {
+			topicRepository.deleteById(id);
 			return true;
 		}
 		return false;
@@ -39,11 +33,13 @@ public class TopicServiceImpl implements TopicService{
 	private List<Topic> getByCategory(String categoria){
 		List<Topic> topicList =  new ArrayList<>();
 		try {
-			if(!isNull(categoria)) {			   
-				topics.stream().filter(t -> t.getCategoria().equals(categoria)).forEach(t ->{
+			if(!isNull(categoria)) {	
+				topicRepository.findByCategory(categoria).forEach(topicList::add);
+				/* modo antigo
+				 * topics.stream().filter(t -> t.getCategoria().equals(categoria)).forEach(t ->{
 					Topic topic = new Topic(t.getId(), t.getNome(), t.getDescription(), t.getCategoria());
 					topicList.add(topic);
-				});
+				});*/
 			}
 			if(topicList.isEmpty()) {
 				throw new TopicException("Houve um problema ao carregar a categoria: "+ categoria);
@@ -61,14 +57,8 @@ public class TopicServiceImpl implements TopicService{
 		}
 		else {
 			logger.info("Atualizando o topic de id: " + id);
-			for(int i = 0; i <= topics.size(); i++) {
-				Topic t = topics.get(i);
-				if(t.getId().equals(id)) {
-					topics.set(i, new Topic(request.getId(), request.getNome(), request.getDescription(), request.getCategoria()));
-					return topics.get(i);
-				}
-			}
-			
+			Topic topic = getTopic(id);
+			topicRepository.save(topic);			
 		}
 		return null;
 	}
@@ -81,12 +71,15 @@ public class TopicServiceImpl implements TopicService{
 		//return topics.stream().filter(t ->	t.getId().equals(id)).findFirst().orElse(null);
 	}
 	private Boolean addTopicService(Topic topic) {
-		if(topic != null){
+		if(!isNull(topic.getId())){
 		topicRepository.save(topic);
 			return true;
 		}		
 		return false;
 	}
+	
+	// metodos publicos de acesso via interface
+	
 	public List<Topic> getAll(){
 		logger.info("get all topics: " + "url /topics");
 		List<Topic>  topics = new ArrayList<>();
@@ -106,22 +99,19 @@ public class TopicServiceImpl implements TopicService{
 			logger.error(e.getMessage());
 		}
 		return null;
-		
 	}
-	public void addTopic(TopicRequest topicRequeste) {
-		if(topicRequeste != null) {
-			Boolean add = addTopicService(new Topic(topicRequeste.getId(), topicRequeste.getNome(), topicRequeste.getDescription(), topicRequeste.getCategoria()));
-			if(add) {
-				logger.info("topic adicionado com sucesso: " + topicRequeste.getId());
-			}
-			else {
-				throw new TopicException("Erro ao adicionado topic, já existe este livro");
-			}
+	public void create(List<TopicRequest> topicsRequeste) {
+		if(topicsRequeste != null) {
+			topicsRequeste.stream().forEach(t -> {
+				Boolean add = addTopicService(new Topic(t.getId(), t.getNome(), t.getDescription(), t.getCategoria()));
+				if(add) {
+					logger.info("topic adicionado com sucesso: " + t.getId());
+				}
+				else {
+					throw new TopicException("Erro ao adicionado topic");
+				}
+			});			
 		}
-		else {
-			throw new TopicException("Topic informado null");
-		}
-		
 	}
 	public Topic upDateTopic(TopicRequest topicUpDate, String id) {
 		Topic topic = upDateTopicService(topicUpDate, id);

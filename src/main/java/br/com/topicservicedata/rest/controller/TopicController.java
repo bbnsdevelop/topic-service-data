@@ -26,7 +26,6 @@ public class TopicController {
 	
 	@RequestMapping("/topics")
 	public List<Topic> getAllTopic() {
-		
 		return topicService.getAll();
 	}
 
@@ -40,8 +39,8 @@ public class TopicController {
 	}
 	
 	@RequestMapping(value = "/topics", method = RequestMethod.POST)
-	public ResponseEntity<?> addTopic(@RequestBody TopicRequest topic){
-		topicService.addTopic(topic);
+	public ResponseEntity<?> addTopic(@RequestBody List<TopicRequest> topics){
+		topicService.create(topics);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 	
