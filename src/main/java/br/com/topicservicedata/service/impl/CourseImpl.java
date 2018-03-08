@@ -11,8 +11,10 @@ import br.com.topicservicedata.builder.CourseBuilder;
 import br.com.topicservicedata.builder.CourseRequestBuilder;
 import br.com.topicservicedata.builder.CourseResponseBuilder;
 import br.com.topicservicedata.entities.Course;
+import br.com.topicservicedata.entities.Topic;
 import br.com.topicservicedata.exception.CourseException;
 import br.com.topicservicedata.repositories.CourseRepository;
+import br.com.topicservicedata.repositories.TopicRepository;
 import br.com.topicservicedata.rest.request.CourseRequest;
 import br.com.topicservicedata.rest.response.CourseResponse;
 import br.com.topicservicedata.service.CourseService;
@@ -20,13 +22,21 @@ import br.com.topicservicedata.service.CourseService;
 @Service
 public class CourseImpl implements CourseService {
 	
-	@Inject
+	
 	private CourseRepository courseRepository;
+	private TopicRepository topicRepository;
+	
+	@Inject
+	public CourseImpl(CourseRepository courseRepository, TopicRepository topicRepository) {
+		this.courseRepository = courseRepository;
+		this.topicRepository = topicRepository;
+	}
 
 	@Override
-	public List<CourseResponse> getAll() {
+	public List<CourseResponse> getAll(Long topicId) {
 		List<Course> courseList = new ArrayList<>();
-		courseRepository.findAll().forEach(courseList::add);
+		
+		courseRepository.findBytopicId(topicId).forEach(courseList::add);
 		List<CourseResponse> responseList =  new ArrayList<>();
 		if(!courseList.isEmpty()) {
 			courseList.stream().forEach(c ->{
@@ -36,7 +46,7 @@ public class CourseImpl implements CourseService {
 						.description(c.getDescription())
 						.categoria(c.getCategoria());
 				responseList.add(builder.build());
-			});
+			});	
 			return responseList;
 		}
 		return null;
@@ -74,24 +84,33 @@ public class CourseImpl implements CourseService {
 	}
 
 	@Override
-	public void create(List<CourseRequest> Courses) {
-		
-		Courses.stream().forEach(c ->{
-			CourseBuilder builder = CourseBuilder.create()
-					.nome(c.getNome())
-					.description(c.getDescription())
-					.categoria(c.getCategoria());
-			courseRepository.save(builder.build());
-		});		
+	public void create(List<CourseRequest> Courses, Long topicId) {
+		Topic topic = topicRepository.findById(topicId).get();
+		if(topic.getId() == topicId) {
+			Courses.stream().forEach(c ->{
+				CourseBuilder builder = CourseBuilder.create()
+						.nome(c.getName())
+						.description(c.getDescription())
+						.categoria(c.getCategory())
+						.topicId(topic.getId())
+						.topicNome(topic.getNome())
+						.topicDescription(topic.getDescription())
+						.topicCategoria(topic.getCategoria());						
+				courseRepository.save(builder.build());
+			});			
+		}
+		else {
+			throw new CourseException("Erro ao processar Course");
+		}
 	}
 
 	@Override
 	public CourseResponse upDateCourse(CourseRequest request) {
 		CourseRequestBuilder builder = CourseRequestBuilder.create()
 				.id(request.getId())
-				.nome(request.getNome())
+				.nome(request.getName())
 				.description(request.getDescription())
-				.categoria(request.getCategoria());
+				.categoria(request.getCategory());
 		 Course course = courseRepository.save(builder.build());
 		 CourseResponseBuilder response = CourseResponseBuilder.create()
 				 .id(course.getId())

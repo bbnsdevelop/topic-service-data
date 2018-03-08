@@ -8,10 +8,10 @@ import br.com.topicservicedata.rest.request.TopicRequest;
 public interface TopicService {
 	
 	public List<Topic> getAll();
-	public Topic getTopic(String id);
+	public Topic getTopic(Long id);
 	public List<Topic> getCategory(String categoria);
 	public void create(List<TopicRequest> topics);
-	public Topic upDateTopic(TopicRequest topicUpDate, String id);
-	public void delete(String id);
+	public Topic upDateTopic(TopicRequest topicUpDate, Long id);
+	public void delete(Long id);
 		
 }

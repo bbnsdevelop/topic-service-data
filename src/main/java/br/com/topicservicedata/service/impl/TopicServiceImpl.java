@@ -23,7 +23,7 @@ public class TopicServiceImpl implements TopicService{
 		
 	private static Logger logger = Logger.getLogger(TopicServiceImpl.class);
 	
-	private Boolean deleteTopic(String id) {
+	private Boolean deleteTopic(Long id) {
 		if(isNull(id)) {
 			topicRepository.deleteById(id);
 			return true;
@@ -51,7 +51,7 @@ public class TopicServiceImpl implements TopicService{
 		return topicList;
 		
 	}
-	private Topic upDateTopicService(TopicRequest request, String id) {
+	private Topic upDateTopicService(TopicRequest request, Long id) {
 		if(TopicBydId(id) == null) {
 			throw new TopicException("Não exixte o id informado para atualizar: " + id);
 		}
@@ -62,7 +62,7 @@ public class TopicServiceImpl implements TopicService{
 		}
 		return null;
 	}
-	private Topic TopicBydId(String id) {
+	private Topic TopicBydId(Long id) {
 		logger.info("buscar topic pelo id: "+ id);
 		if(isNull(id)) {
 			throw new TopicException("Não existe o id informado: " + id);
@@ -71,7 +71,7 @@ public class TopicServiceImpl implements TopicService{
 		//return topics.stream().filter(t ->	t.getId().equals(id)).findFirst().orElse(null);
 	}
 	private Boolean addTopicService(Topic topic) {
-		if(!isNull(topic.getId())){
+		if(!isNull(topic.getNome())){
 		topicRepository.save(topic);
 			return true;
 		}		
@@ -87,7 +87,7 @@ public class TopicServiceImpl implements TopicService{
 		.forEach(topics::add);
 		return topics;
 	}
-	public Topic getTopic(String id) {
+	public Topic getTopic(Long id) {
 		try {
 			Topic topicById = TopicBydId(id);
 			if(topicById != null) {
@@ -103,7 +103,7 @@ public class TopicServiceImpl implements TopicService{
 	public void create(List<TopicRequest> topicsRequeste) {
 		if(topicsRequeste != null) {
 			topicsRequeste.stream().forEach(t -> {
-				Boolean add = addTopicService(new Topic(t.getId(), t.getNome(), t.getDescription(), t.getCategoria()));
+				Boolean add = addTopicService(new Topic(t.getNome(), t.getDescription(), t.getCategoria()));
 				if(add) {
 					logger.info("topic adicionado com sucesso: " + t.getId());
 				}
@@ -113,7 +113,7 @@ public class TopicServiceImpl implements TopicService{
 			});			
 		}
 	}
-	public Topic upDateTopic(TopicRequest topicUpDate, String id) {
+	public Topic upDateTopic(TopicRequest topicUpDate, Long id) {
 		Topic topic = upDateTopicService(topicUpDate, id);
 		if(topic != null) {
 			return topic;
@@ -123,7 +123,7 @@ public class TopicServiceImpl implements TopicService{
 	public List<Topic> getCategory(String categoria) {
 		return getByCategory(categoria);
 	}
-	public void delete(String id) {
+	public void delete(Long id) {
 		Boolean delete = deleteTopic(id);
 		if(delete) {
 			logger.info("topic deletado com sucesso: " + id);

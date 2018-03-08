@@ -1,0 +1,76 @@
+1ª POST chamada localhost:8090/topics  
+
+[
+	{
+	"nome":"Spring",
+	"description":"Spring boot is good to started new project",
+	"categoria":"back-end"
+	},
+	{
+	"nome":"boot",
+	"description":"Spring boot is good to started new project",
+	"categoria":"back-end"
+	},
+	{
+	"nome":"java ee",
+	"description":"java ee is good to started new project",
+	"categoria":"back-end"
+	},
+	{
+	"nome":"Spring boot",
+	"description":"Spring boot is good to started new project",
+	"categoria":"back-end"
+	},
+	{
+	"nome":"Spring boot",
+	"description":"Spring boot is good to started new project",
+	"categoria":"front-end"
+	},
+	{
+	"nome":"Spring boot",
+	"description":"Spring boot is good to started new project",
+	"categoria":"front-end"
+	}
+]
+
+
+
+2ª POST chamada localhost:8090/course/add/1/courses
+
+[
+	{
+	"name":"Spring boot",
+	"description":"Spring boot is good to started new project",
+	"category":"back-end"
+	},
+	{
+	"name":"Spring boot",
+	"description":"Spring boot is good to started new project",
+	"category":"back-end"
+	},
+	{
+	"name":"Spring boot",
+	"description":"Spring boot is good to started new project",
+	"category":"back-end"
+	},
+	{
+	"name":"Spring boot",
+	"description":"Spring boot is good to started new project",
+	"category":"back-end"
+	},
+	{
+	"name":"Spring boot",
+	"description":"Spring boot is good to started new project",
+	"category":"front-end"
+	},
+	{
+	"name":"Spring boot",
+	"description":"Spring boot is good to started new project",
+	"category":"front-end"
+	}
+]
+
+3ª chamada GET localhost:8090/course/1/find-all
+
+
+4ª chamada GET localhost:8090/topic/1/course/1

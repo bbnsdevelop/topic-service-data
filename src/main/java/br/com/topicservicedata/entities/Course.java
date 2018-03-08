@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -13,7 +15,7 @@ public class Course {
 	
 	@Id
 	@Column(name ="course_id", nullable = false, unique = true)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;	
 	
 	@Column(name ="course_name", nullable = false, length = 20)
@@ -24,6 +26,13 @@ public class Course {
 	
 	@Column(name ="course_categoria", nullable = false, length = 20)
 	private String categoria;
+	
+	@Column(name = "id_topic")
+	private Long topicId;
+	
+	@ManyToOne(optional=false)
+	@JoinColumn(name = "id_topic", insertable=false, updatable=false)
+	private Topic topic;
 	
 	public Course() {
 		
@@ -66,7 +75,23 @@ public class Course {
 
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
-	}	
+	}
+
+	public Topic getTopic() {
+		return topic;
+	}
+
+	public void setTopic(Topic topic) {
+		this.topic = topic;
+	}
+
+	public Long getTopicId() {
+		return topicId;
+	}
+
+	public void setTopicId(Long topicId) {
+		this.topicId = topicId;
+	}
 	
 	
 }

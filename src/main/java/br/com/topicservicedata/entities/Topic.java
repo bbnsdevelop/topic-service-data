@@ -1,6 +1,9 @@
 package br.com.topicservicedata.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -9,27 +12,31 @@ import javax.persistence.Table;
 public class Topic {	
 	
 	@Id
-	private String id;	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id_topic", nullable = false, unique = true)
+	private Long id;	
+	@Column(name = "nome_topic", nullable = false)
 	private String nome;
+	@Column(name = "description_topic", nullable = false)
 	private String description;
+	@Column(name = "categoria_topic", nullable = false)
 	private String categoria;	
 	
 	public Topic() {
 	
 	}
 	
-	public Topic(String id, String nome, String description, String categoria) {
+	public Topic(String nome, String description, String categoria) {
 		super();
-		this.id = id;
 		this.nome = nome;
 		this.description = description;
 		this.categoria = categoria;
 	}
 	
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getNome() {

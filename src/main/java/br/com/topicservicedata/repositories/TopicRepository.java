@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import br.com.topicservicedata.entities.Topic;
 
 @Repository
-public interface TopicRepository  extends CrudRepository<Topic, String>{
+public interface TopicRepository  extends CrudRepository<Topic, Long>{
 	
 	@Query("select t from Topic t where t.categoria = :categoria")
 	List<Topic> findByCategory(@Param("categoria") String categoria);

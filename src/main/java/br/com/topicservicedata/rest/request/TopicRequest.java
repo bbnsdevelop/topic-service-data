@@ -2,15 +2,15 @@ package br.com.topicservicedata.rest.request;
 
 public class TopicRequest {
 	
-	private String id;
+	private Long id;
 	private String nome;
 	private String description;
 	private String categoria;
 	
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getNome() {

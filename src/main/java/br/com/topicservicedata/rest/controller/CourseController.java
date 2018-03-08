@@ -21,15 +21,13 @@ import br.com.topicservicedata.service.CourseService;
 @RequestMapping("/course")
 public class CourseController implements CourseResource {
 	
-	// 30 mm 3:18
-	
 	@Inject
 	private CourseService courseService;
 	
 	@Override
-	@RequestMapping(value ="/find-all", method = RequestMethod.GET)
-	public ResponseEntity<List<CourseResponse>> getAllTopic() {
-		return ResponseEntity.status(HttpStatus.OK).body(courseService.getAll());
+	@RequestMapping(value ="/{topicId}/find-all", method = RequestMethod.GET)
+	public ResponseEntity<List<CourseResponse>> getAllTopic(@PathVariable("topicId") Long topicId) {
+		return ResponseEntity.status(HttpStatus.OK).body(courseService.getAll(topicId));
 	}
 
 	@Override
@@ -45,9 +43,9 @@ public class CourseController implements CourseResource {
 	}
 
 	@Override
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public ResponseEntity<?> addTopic(@RequestBody List<CourseRequest> topics) {
-		courseService.create(topics);
+	@RequestMapping(value = "/add/{topicId}/courses", method = RequestMethod.POST)
+	public ResponseEntity<?> addTopic(@RequestBody List<CourseRequest> topics, @PathVariable("topicId") Long topicId) {
+		courseService.create(topics, topicId);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
