@@ -15,7 +15,7 @@ public class Course {
 	
 	@Id
 	@Column(name ="course_id", nullable = false, unique = true)
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;	
 	
 	@Column(name ="course_name", nullable = false, length = 20)

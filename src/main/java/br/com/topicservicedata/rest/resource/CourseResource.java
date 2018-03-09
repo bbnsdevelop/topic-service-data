@@ -14,7 +14,7 @@ public interface CourseResource {
 		public ResponseEntity<CourseResponse> getTopic(Long id); 
 		public ResponseEntity<List<CourseResponse>> getTopicByCategory(String categoria);
 		public ResponseEntity<?> addTopic(List<CourseRequest> topics, Long topicId);
-		public ResponseEntity<CourseResponse> upDateTopic(CourseRequest request);
+		public ResponseEntity<CourseResponse> upDateTopic(CourseRequest request, Long topicId);
 		public ResponseEntity<?> deleteTopic(Long id);
 
 }

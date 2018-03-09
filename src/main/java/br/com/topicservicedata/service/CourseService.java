@@ -11,7 +11,7 @@ public interface CourseService {
 	public CourseResponse getCourse(Long id);
 	public List<CourseResponse> getCategory(String categoria);
 	public void create(List<CourseRequest> Courses, Long topicId);
-	public CourseResponse upDateCourse(CourseRequest request);
+	public CourseResponse upDateCourse(CourseRequest request, Long topicId);
 	public void delete(Long id);
 	
 }

@@ -8,6 +8,7 @@ public class CourseRequestBuilder {
 	private String nome;
 	private String description;
 	private String categoria;
+	private Long topicId;
 	
 	public static CourseRequestBuilder create() {
 		return new CourseRequestBuilder();
@@ -17,7 +18,10 @@ public class CourseRequestBuilder {
 		this.id = id;
 		return this;
 	}
-	
+	public CourseRequestBuilder topicId(Long topicId) {
+		this.topicId = topicId;
+		return this;
+	}
 	public CourseRequestBuilder nome(String nome) {
 		this.nome = nome;
 		return this;
@@ -36,7 +40,8 @@ public class CourseRequestBuilder {
 		course.setId(id);
 		course.setNome(nome);
 		course.setDescription(description);
-		course.setCategoria(categoria);		
+		course.setCategoria(categoria);	
+		course.setTopicId(topicId);
 		return course;
 		
 	}

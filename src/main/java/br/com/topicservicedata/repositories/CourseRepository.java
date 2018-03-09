@@ -12,7 +12,7 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
 	
 	@Query("select c from Course c where c.categoria = :categoria")
 	List<Course> findByCategoria(@Param("categoria") String categoria);
-	@Query("select c from Course c JOIN Topic t ON c.topic = t.id where c.topicId = :topicId")
+	@Query("select c from Course c INNER JOIN Topic t ON t.id = c.topic where c.topicId = :topicId")
 	List<Course> findBytopicId(@Param("topicId") Long topic);
 
 }

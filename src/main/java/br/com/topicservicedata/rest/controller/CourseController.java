@@ -50,18 +50,16 @@ public class CourseController implements CourseResource {
 	}
 
 	@Override
-	@RequestMapping(value = "/update", method = RequestMethod.PUT)
-	public ResponseEntity<CourseResponse> upDateTopic(@RequestBody CourseRequest request) {
-		courseService.upDateCourse(request);
-		
-		return null;
+	@RequestMapping(value = "/update/topic/{topicId}", method = RequestMethod.PUT)
+	public ResponseEntity<CourseResponse> upDateTopic(@RequestBody CourseRequest request, @PathVariable("topicId") Long topicId) {
+		return ResponseEntity.status(HttpStatus.OK).body(courseService.upDateCourse(request,  topicId));
 	}
 
 	@Override
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<?> deleteTopic(@PathVariable("id") Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseEntity<Void> deleteTopic(@PathVariable("id") Long id) {
+		courseService.delete(id);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 }

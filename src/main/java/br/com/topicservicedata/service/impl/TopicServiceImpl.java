@@ -101,7 +101,7 @@ public class TopicServiceImpl implements TopicService{
 		return null;
 	}
 	public void create(List<TopicRequest> topicsRequeste) {
-		if(topicsRequeste != null) {
+		if(!topicsRequeste.isEmpty()) {
 			topicsRequeste.stream().forEach(t -> {
 				Boolean add = addTopicService(new Topic(t.getNome(), t.getDescription(), t.getCategoria()));
 				if(add) {

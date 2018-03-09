@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-
+import static java.util.Objects.isNull;
 import org.springframework.stereotype.Service;
 
 import br.com.topicservicedata.builder.CourseBuilder;
@@ -105,24 +105,34 @@ public class CourseImpl implements CourseService {
 	}
 
 	@Override
-	public CourseResponse upDateCourse(CourseRequest request) {
-		CourseRequestBuilder builder = CourseRequestBuilder.create()
-				.id(request.getId())
-				.nome(request.getName())
-				.description(request.getDescription())
-				.categoria(request.getCategory());
-		 Course course = courseRepository.save(builder.build());
-		 CourseResponseBuilder response = CourseResponseBuilder.create()
-				 .id(course.getId())
-				 .nome(course.getNome())
-				 .description(course.getDescription())
-				 .categoria(course.getCategoria());
-		 return response.build();
+	public CourseResponse upDateCourse(CourseRequest request, Long topicId) {
+		if(!request.equals(null)) {
+			
+			CourseRequestBuilder builder = CourseRequestBuilder.create()
+					.id(request.getId())
+					.nome(request.getName())
+					.description(request.getDescription())
+					.categoria(request.getCategory())
+					.topicId(topicId);
+			Course course = courseRepository.save(builder.build());
+			CourseResponseBuilder response = CourseResponseBuilder.create()
+					.id(course.getId())
+					.nome(course.getNome())
+					.description(course.getDescription())
+					.categoria(course.getCategoria());
+			 return response.build();
+		}
+		else {
+			throw new CourseException("Request enviado nulo");
+		}
 	}
 
 	@Override
 	public void delete(Long id) {
-		courseRepository.deleteById(id);		
+		if(!isNull(id)) {
+			courseRepository.deleteById(id);
+		}
+				
 	}
 	
 
