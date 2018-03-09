@@ -14,7 +14,7 @@ derby.log
 target/
 mvnw
 mvnw.cmd
-
+db/
 ### IntelliJ IDEA ###
 .idea
 *.iws

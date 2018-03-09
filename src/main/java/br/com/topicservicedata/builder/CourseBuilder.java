@@ -62,6 +62,7 @@ public class CourseBuilder {
 		topic.setNome(topicNome);
 		topic.setDescription(topicDescription);
 		topic.setCategoria(topicCategoria);
+		course.setTopicId(topic.getId());
 		course.setTopic(topic);
 		return course;
 		
